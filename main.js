@@ -112,7 +112,7 @@ Enter 1 instead of name)
     // io.sockets.in(thisRoom.roomname).emit('chat message', { data: data, id: socket.id });
    
 
-    if ((typeof data.value === 'number') && (data.value == 0)) {
+    if (isInit)  {
       dat = `
       Welcome to Daily Nation E-Paper 
   Please enter your Name:
@@ -129,7 +129,7 @@ Enter 1 instead of name)
       thisRoom.counter++;
       }
 
-     if ((typeof data.value !== 'number') || ((data.value != 0) && (data.value != 1) && !isInit) ) {
+     if (((typeof data.value !== 'number') || (data.value != 0) && (data.value != 1)) && !isInit ) {
       dat = `
       Please type 0 or 1. This is just a test application
       `;
