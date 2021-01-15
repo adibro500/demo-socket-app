@@ -136,6 +136,10 @@
       //scroll to the bottom
       window.scrollTo(0, document.body.scrollHeight);
     }
+
+    socket.on('ping', function(data){
+      socket.emit('pong', {beat: 1});
+    });
    
   </script>
 </html>
