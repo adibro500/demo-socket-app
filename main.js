@@ -1,10 +1,15 @@
 var app = require("express")();
 var http = require("http").createServer(app);
-var io = require("socket.io")(http, {'pingTimeout': 7000, 'pingInterval': 3000});
+var io = require("socket.io")(http);
 const { joinUser, removeUser, findUser, getUsers, changeArr } = require('./users');
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
+
+function sendHeartbeat(){
+  setTimeout(sendHeartbeat, 8000);
+  io.sockets.emit('ping', { beat : 1 });
+}
 let thisRoom = "";
 let menuNumber = 1;
 let count = 0;
@@ -156,6 +161,9 @@ Enter 1 instead of name)
   });
 });
 
+
+
 http.listen(process.env.PORT || 3000, function () { });
 
 
+setTimeout(sendHeartbeat, 8000);
