@@ -69,7 +69,6 @@
     // let room = prompt("room name");
     // let room = Math.floor(Math.random() * 11);
     let ID = "";
-    displayMenuMessage();
     var menuNumber;
     var socket = io();
     //send event that user has joined room
@@ -87,9 +86,8 @@
       .getElementsByTagName("form")[0]
       .addEventListener("submit", function (event) {
         event.preventDefault();
-       if (document.getElementById("m").value == 1) {
-          val = val + parseInt(document.getElementById("m").value);
-        } 
+          val = parseInt(document.getElementById("m").value);
+      
         socket.emit("chat message", {
           value: val,
           user: userName
@@ -129,7 +127,7 @@
         data.data.user +
         "</p>" +
         '<p class="message"> ' +
-        data.data.stepdata +
+        data.data.response +
         "</p>";
       div.appendChild(p);
       li.appendChild(div);
@@ -138,30 +136,6 @@
       //scroll to the bottom
       window.scrollTo(0, document.body.scrollHeight);
     }
-    function displayMenuMessage() {
-        let authorClass = "";
-      let divClass = ""
-     
-        authorClass = "you";
-        divClass = "yourDiv";
-      
-      const div = document.createElement("div");
-      div.className = divClass;
-      const li = document.createElement("li");
-      const p = document.createElement("p");
-      p.className = "time";
-      p.innerText = moment().format("hh:mm");
-      div.innerHTML =
-        '<p class="' +
-        authorClass +
-        '">' +
-        "Welcome to Daily Nation E-Paper \n Please enter your name: \n (It is just a test version. \n Enter 1 instead)" +
-        "</p>";
-      div.appendChild(p);
-      li.appendChild(div);
-
-      document.getElementById("messages").appendChild(li);
-      window.scrollTo(0, document.body.scrollHeight);
-    }
+   
   </script>
 </html>
