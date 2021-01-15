@@ -1,11 +1,12 @@
 let users = [];
-function joinUser(socketId , userName, roomName, value, counter) {
+function joinUser(socketId , userName, roomName, value, counter, isInit) {
 const user = {
   socketID :  socketId,
   username : userName,
   roomname : roomName,
   value: value,
-  counter: counter
+  counter: counter,
+  isInit: isInit
 }
   users.push(user)
 return user;

@@ -13,12 +13,11 @@ function sendHeartbeat(){
 let thisRoom = "";
 let menuNumber = 1;
 let count = 0;
-let isInit = true;
 io.on("connection", function (socket) {
   console.log("connected");
   socket.on("join room", (data) => {
     console.log('in room');
-    let Newuser = joinUser(socket.id, data.username, data.roomName, 0, 0)
+    let Newuser = joinUser(socket.id, data.username, data.roomName, 0, 0, true)
     io.to(Newuser.roomname).emit('send data', { username: Newuser.username, roomname: Newuser.roomname, id: socket.id })
     //  io.to(socket.id).emit('send data' , {id : socket.id ,username:Newuser.username, roomname : Newuser.roomname });
     //  socket.emit('send data' , {id : socket.id ,username:Newuser.username, roomname : Newuser.roomname });
@@ -117,7 +116,7 @@ Enter 1 instead of name)
     // io.sockets.in(thisRoom.roomname).emit('chat message', { data: data, id: socket.id });
    
 
-    if (isInit)  {
+    if (thisRoom.isInit)  {
       dat = `
       Welcome to Daily Nation E-Paper 
   Please enter your Name:
@@ -134,7 +133,7 @@ Enter 1 instead of name)
       thisRoom.counter++;
       }
 
-     if (((typeof data.value !== 'number') || (data.value != 0) && (data.value != 1)) && !isInit ) {
+     if (((typeof data.value !== 'number') || (data.value != 0) && (data.value != 1)) && !thisRoom.isInit ) {
       dat = `
       Please type 0 or 1. This is just a test application
       `;
@@ -145,7 +144,7 @@ Enter 1 instead of name)
       // thisRoom.counter = 1;
      }
   
-     isInit = false;
+     thisRoom.isInit = false;
      io.sockets.in(thisRoom.roomname).emit('chat message', { data: data, id: socket.id });
     
 
