@@ -6,10 +6,7 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
-function sendHeartbeat(){
-  setTimeout(sendHeartbeat, 8000);
-  io.sockets.emit('ping', { beat : 1 });
-}
+
 let thisRoom = "";
 let menuNumber = 1;
 let count = 0;
@@ -164,5 +161,3 @@ Enter 1 instead of name)
 
 http.listen(process.env.PORT || 3000, function () { });
 
-
-setTimeout(sendHeartbeat, 8000);
