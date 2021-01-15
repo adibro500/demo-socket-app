@@ -70,7 +70,7 @@
     // let room = Math.floor(Math.random() * 11);
     let ID = "";
     var menuNumber;
-    var socket = io({transports: ['websocket'], upgrade: false});
+    var socket = io();
     //send event that user has joined room
     socket.emit("join room", {userName : userName, roomName : userName});
 
