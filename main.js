@@ -8,6 +8,7 @@ app.get("/", function (req, res) {
 let thisRoom = "";
 let menuNumber = 1;
 let count = 0;
+let isInit = true;
 io.on("connection", function (socket) {
   console.log("connected");
   socket.on("join room", (data) => {
@@ -24,7 +25,7 @@ io.on("connection", function (socket) {
   socket.on("chat message", (data) => {
     thisRoom = getUsers().find(x => x.socketID === socket.id);
     let dat = '';
-    console.log('value --- ', thisRoom.value);
+    // console.log('value --- ', thisRoom.value);
     thisRoom.counter = thisRoom.counter + thisRoom.value;
 
     switch (thisRoom.counter) {
@@ -109,9 +110,7 @@ Enter 1 instead of name)
     console.log(data);
 
     // io.sockets.in(thisRoom.roomname).emit('chat message', { data: data, id: socket.id });
-    if (data.value == 1) {
-    thisRoom.counter++;
-    }
+   
 
     if ((typeof data.value === 'number') && (data.value == 0)) {
       dat = `
@@ -126,18 +125,22 @@ Enter 1 instead of name)
       thisRoom.counter = 1;
      }
 
-     if (((typeof data.value !== 'number') || (data.value != 0) && (data.value != 1)) && (thisRoom.counter > 0) ) {
+     if (data.value == 1) {
+      thisRoom.counter++;
+      }
+
+     if ((typeof data.value !== 'number') || ((data.value != 0) && (data.value != 1) && !isInit) ) {
       dat = `
       Please type 0 or 1. This is just a test application
       `;
       data = Object.assign(data, { response: dat });
 
-      delete data['value'];
   
       console.log(data);
       // thisRoom.counter = 1;
      }
   
+     isInit = false;
      io.sockets.in(thisRoom.roomname).emit('chat message', { data: data, id: socket.id });
     
 
