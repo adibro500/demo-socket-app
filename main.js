@@ -1,6 +1,6 @@
 var app = require("express")();
 var http = require("http").createServer(app);
-var io = require("socket.io")(http);
+var io = require("socket.io")(http, {'pingTimeout': 7000, 'pingInterval': 3000});
 const { joinUser, removeUser, findUser, getUsers, changeArr } = require('./users');
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
