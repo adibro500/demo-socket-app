@@ -13,7 +13,7 @@ io.on("connection", function (socket) {
   console.log("connected");
   socket.on("join room", (data) => {
     console.log('in room');
-    let Newuser = joinUser(socket.id, data.username, data.roomName, 0, 0, true)
+    let Newuser = joinUser(socket.id, data.username, data.roomName, 0, -1, true)
     io.to(Newuser.roomname).emit('send data', { username: Newuser.username, roomname: Newuser.roomname, id: socket.id })
     //  io.to(socket.id).emit('send data' , {id : socket.id ,username:Newuser.username, roomname : Newuser.roomname });
     //  socket.emit('send data' , {id : socket.id ,username:Newuser.username, roomname : Newuser.roomname });
@@ -26,15 +26,37 @@ io.on("connection", function (socket) {
     thisRoom = getUsers().find(x => x.socketID === socket.id);
     let dat = '';
     console.log('value --- ', data);
-    thisRoom.counter = thisRoom.counter + thisRoom.value;
+    
+
+   if (data.value == 0) {
+     thisRoom.counter = 0;
+   }
+
+  
 
     switch (thisRoom.counter) {
-      case 0:
+      case -1:
         dat = `
       Welcome to Daily Nation E-Paper 
 Please enter your Name:
 ( It is just a test version. 
 Enter 1 instead of name)
+Select Boty:
+1. E Paper
+2. PVT Election Bot
+      `;
+      thisRoom.counter = 0;
+        break;
+
+        case 0:
+        dat = `
+      Welcome to Daily Nation E-Paper 
+Please enter your Name:
+( It is just a test version. 
+Enter 1 instead of name)
+Select Boty:
+1. E Paper
+2. PVT Election Bot
       `;
         break;
 
@@ -89,56 +111,28 @@ https://flutterwave.com/us/
 Press 0 to go to Main Menu.
 `;
         break;
+default: 
+dat = ` Please enter 0 to go to Main Menu`;
+break;        
     }
     
-   if ((typeof thisRoom.value === 'number') && (thisRoom.counter == 0) || (thisRoom.counter >= 5) || (thisRoom.counter == 0)) {
-    dat = `
-    Welcome to Daily Nation E-Paper 
-Please enter your Name:
-( It is just a test version. 
-Enter 1 instead of name)
-    `;
-    if (thisRoom.counter >= 5) {
-    thisRoom.counter = 0;
-    } else {
-    thisRoom.counter++;
-    }
-   }
 
-    data = Object.assign(data, { response: dat });
 
-    console.log(data);
-
-    // io.sockets.in(thisRoom.roomname).emit('chat message', { data: data, id: socket.id });
-   
-
-    if (thisRoom.isInit)  {
-      dat = `
-      Welcome to Daily Nation E-Paper 
-  Please enter your Name:
-  ( It is just a test version. 
-  Enter 1 instead of name)
-      `;
-      data = Object.assign(data, { response: dat });
-  
-      console.log(data);
-      thisRoom.counter = 1;
-     }
-
-     if (data.value == 1) {
-      thisRoom.counter++;
-      }
-
-     if (((typeof data.value !== 'number') || (data.value == -1) || (data.value != 0) && (data.value != 1)) && !thisRoom.isInit ) {
+     if ( (data.value == -1) && !thisRoom.isInit ) {
       dat = `
       Please type 0 or 1. This is just a test application
       `;
-      data = Object.assign(data, { response: dat });
-
-  
-      console.log(data);
-      // thisRoom.counter = 1;
      }
+     if ( ((data.value != 1) && (data.value != 0)) && !thisRoom.isInit ) {
+      dat = `
+      Please type 0 or 1. This is just a test application
+      `;
+     }
+      data = Object.assign(data, { response: dat });
+      thisRoom.counter++;
+  
+      console.log('counter ====', thisRoom.counter);
+
   
      thisRoom.isInit = false;
      io.sockets.in(thisRoom.roomname).emit('chat message', { data: data, id: socket.id });
