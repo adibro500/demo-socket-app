@@ -8,8 +8,7 @@ app.get("/", function (req, res) {
 
 
 let thisRoom = "";
-let menuNumber = 1;
-let count = 0;
+
 io.on("connection", function (socket) {
   console.log("connected");
   socket.on("join room", (data) => {
@@ -26,7 +25,7 @@ io.on("connection", function (socket) {
   socket.on("chat message", (data) => {
     thisRoom = getUsers().find(x => x.socketID === socket.id);
     let dat = '';
-    // console.log('value --- ', thisRoom.value);
+    console.log('value --- ', data);
     thisRoom.counter = thisRoom.counter + thisRoom.value;
 
     switch (thisRoom.counter) {
@@ -130,7 +129,7 @@ Enter 1 instead of name)
       thisRoom.counter++;
       }
 
-     if (((typeof data.value !== 'number') || (data.value != 0) && (data.value != 1)) && !thisRoom.isInit ) {
+     if (((typeof data.value !== 'number') || (data.value == -1) || (data.value != 0) && (data.value != 1)) && !thisRoom.isInit ) {
       dat = `
       Please type 0 or 1. This is just a test application
       `;
