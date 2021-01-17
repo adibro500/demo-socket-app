@@ -9,11 +9,14 @@ app.get("/", function (req, res) {
 
 let thisRoom = "";
 
+let cachedValues = [];
+let datum = [];
+
 io.on("connection", function (socket) {
   console.log("connected");
   socket.on("join room", (data) => {
     console.log('in room');
-    let Newuser = joinUser(socket.id, data.username, data.roomName, 0, -1, true)
+    let Newuser = joinUser(socket.id, data.username, data.roomName, 0, -1, true, false)
     io.to(Newuser.roomname).emit('send data', { username: Newuser.username, roomname: Newuser.roomname, id: socket.id })
     //  io.to(socket.id).emit('send data' , {id : socket.id ,username:Newuser.username, roomname : Newuser.roomname });
     //  socket.emit('send data' , {id : socket.id ,username:Newuser.username, roomname : Newuser.roomname });
@@ -26,13 +29,12 @@ io.on("connection", function (socket) {
     thisRoom = getUsers().find(x => x.socketID === socket.id);
     let dat = '';
     console.log('value --- ', data);
-    
 
    if (data.value == 0) {
      thisRoom.counter = 0;
    }
 
-  
+  //  thisRoom.cachedValues.push(data);
 
     switch (thisRoom.counter) {
       case -1:
@@ -46,6 +48,7 @@ Select Boty:
 2. PVT Election Bot
       `;
       thisRoom.counter = 0;
+      thisRoom.nextMenu = false;
         break;
 
         case 0:
@@ -58,9 +61,13 @@ Select Boty:
 1. E Paper
 2. PVT Election Bot
       `;
+      // thisRoom.counter = 0;
+      thisRoom.nextMenu = false;
         break;
 
       case 1:
+
+        if(!thisRoom.nextMenu) {
         dat = `
 #enter province# 
 Please enter your Province:
@@ -76,9 +83,20 @@ Enter 1 instead of name)
 8. North-Western Province
 9. Luapula Province
 10. Northern Province
+`; } else {
+  dat = `
+  Please enter polling station no:
+  { Its a test version,
+     Enter 1 instead of station no.
+  }
+  
+  
+  Press 0 to go to Main Menu.
 `;
+}
         break;
       case 2:
+        if(!thisRoom.nextMenu) {
         dat = `
 #Category#
 We Welcome you to Daily Nation Family. 
@@ -86,9 +104,25 @@ Please tell us what are you looking for:
 1) Subscribe for Daily Newspaper 
 2) Buy Archives
 3) Get Credential for Website login
-`;
+`; } else {
+  dat = `
+  Northmead Basic School polling
+Please choose one of the option below:
+{ Its a test version,
+   only 1 number is working.
+}
+1) Presidential
+2) MP
+3) Mayor
+4) councillor
+
+
+Press 0 to go to Main Menu.
+  `
+}
         break;
       case 3:
+        if(!thisRoom.nextMenu) {
         dat = `#Subscribe for Daily Newspaper#
 Please select the subscription duration:
 1) 1 Day Subscription
@@ -98,8 +132,26 @@ Please select the subscription duration:
 5) 3 Months Subscription
 6) 6 Months Subscription
 7) 1 year Subscription`
+        } else {
+          dat = `
+          Please select political party:
+{ Its a test version,
+   only 1 number is working.
+}
+1) PF
+2) UPND
+3) DP
+4) MMD
+5) UNIP 
+6) CDC
+
+
+Press 0 to go to Main Menu.
+          `
+        }
         break;
       case 4:
+        if(!thisRoom.nextMenu) { 
         dat = `
 #subscription pay#
 You selected 1 Day Subscription.
@@ -109,10 +161,20 @@ https://flutterwave.com/us/
 
 
 Press 0 to go to Main Menu.
-`;
+`; } else {
+  dat = `
+  Please enter the Vote counts:
+{ Its a test version,
+   only 1 number is working.
+}
+
+
+Press 0 to go to Main Menu.
+  `;
+}
         break;
 default: 
-dat = ` Please enter 0 to go to Main Menu`;
+dat = `Please enter 0 to go to Main Menu`;
 break;        
     }
     
@@ -123,15 +185,44 @@ break;
       Please type 0 or 1. This is just a test application
       `;
      }
-     if ( ((data.value != 1) && (data.value != 0)) && !thisRoom.isInit ) {
+     if ( ((data.value != 1) && (data.value != 0)) && !thisRoom.isInit) {
       dat = `
       Please type 0 or 1. This is just a test application
       `;
      }
+
+     if ( (data.value == 2) && !thisRoom.isInit && !thisRoom.nextMenu) {
+      thisRoom.nextMenu = true
+      dat = `
+      Welcome to PVT 2021
+Please choose one option below:
+{ Its a test version,
+   Enter 1 instead of station no.
+}
+1) Enter Result
+2) Check Result
+3) Upload image of the results
+4) Send image of the QR code
+
+
+Press 0 to go to Main Menu.
+      `; 
+      thisRoom.counter = 0;
+    }
+
+
+    console.log('counter ====', thisRoom.counter);
+
       data = Object.assign(data, { response: dat });
       thisRoom.counter++;
   
-      console.log('counter ====', thisRoom.counter);
+
+
+      // if ( (thisRoom.cachedValues[thisRoom.cachedValues.length - 1] == -1) && (data.value == 2)) {
+      //   dat = `weddqwfd`;
+      // }
+      console.log('lllll ====', thisRoom.nextMenu);
+
 
   
      thisRoom.isInit = false;
