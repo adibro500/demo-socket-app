@@ -134,7 +134,7 @@ Please tell us what are you looking for:
 1) Subscribe for Daily Newspaper 
 2) Buy Archives
 3) Get Credential for Website login
-`; } else {
+`; }   else {
   dat = `
           Please select political party:
 { Its a test version,
@@ -163,7 +163,7 @@ Please select the subscription duration:
 5) 3 Months Subscription
 6) 6 Months Subscription
 7) 1 year Subscription`
-        } else {
+        }  else {
           dat = `
           Please enter the Vote counts:
         { Its a test version,
@@ -194,8 +194,9 @@ Updated Total Vote Count in presidential election for the PF political party is 
 
 Press 0 to go to the Main Menu
   `
-}
+}  
         break;
+
 default: 
 dat = `Please enter 0 to go to Main Menu`;
 break;        
@@ -230,7 +231,7 @@ Please choose one option below:
 
 Press 0 to go to Main Menu.
       `; 
-      thisRoom.counter = 1;
+      thisRoom.counter = 0;
     }
 
 
