@@ -86,7 +86,7 @@
       .getElementsByTagName("form")[0]
       .addEventListener("submit", function (event) {
         event.preventDefault();
-          val = !parseInt(document.getElementById("m").value) ? -1 : parseInt(document.getElementById("m").value);
+          val = (!parseInt(document.getElementById("m").value) && (parseInt(document.getElementById("m").value) != 0))  ? -1 : parseInt(document.getElementById("m").value);
       
         socket.emit("chat message", {
           value: val,
