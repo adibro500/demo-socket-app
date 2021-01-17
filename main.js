@@ -16,7 +16,7 @@ io.on("connection", function (socket) {
   console.log("connected");
   socket.on("join room", (data) => {
     console.log('in room');
-    let Newuser = joinUser(socket.id, data.username, data.roomName, 0, 0, true, false)
+    let Newuser = joinUser(socket.id, data.username, data.roomName, 0, -1, true, false)
     io.to(Newuser.roomname).emit('send data', { username: Newuser.username, roomname: Newuser.roomname, id: socket.id })
     //  io.to(socket.id).emit('send data' , {id : socket.id ,username:Newuser.username, roomname : Newuser.roomname });
     //  socket.emit('send data' , {id : socket.id ,username:Newuser.username, roomname : Newuser.roomname });
