@@ -16,7 +16,7 @@ io.on("connection", function (socket) {
   console.log("connected");
   socket.on("join room", (data) => {
     console.log('in room');
-    let Newuser = joinUser(socket.id, data.username, data.roomName, 0, -1, true, false)
+    let Newuser = joinUser(socket.id, data.username, data.roomName, 0, 0, true, false)
     io.to(Newuser.roomname).emit('send data', { username: Newuser.username, roomname: Newuser.roomname, id: socket.id })
     //  io.to(socket.id).emit('send data' , {id : socket.id ,username:Newuser.username, roomname : Newuser.roomname });
     //  socket.emit('send data' , {id : socket.id ,username:Newuser.username, roomname : Newuser.roomname });
@@ -33,6 +33,9 @@ io.on("connection", function (socket) {
    if (data.value == 0) {
      thisRoom.counter = 0;
    }
+   if (data.value == 1) {
+     thisRoom.counter++;
+   }
 
   //  thisRoom.cachedValues.push(data);
 
@@ -43,29 +46,40 @@ io.on("connection", function (socket) {
 Please enter your Name:
 ( It is just a test version. 
 Enter 1 instead of name)
-Select Boty:
+Please Select one of the demo chat Bots:
 1. E Paper
 2. PVT Election Bot
       `;
       thisRoom.counter = 0;
+      thisRoom.isInit = true;
       thisRoom.nextMenu = false;
         break;
 
         case 0:
         dat = `
-      Welcome to Daily Nation E-Paper 
-Please enter your Name:
-( It is just a test version. 
-Enter 1 instead of name)
-Select Boty:
+        Welcome to Daily Nation E-Paper 
+        Please enter your Name:
+        ( It is just a test version. 
+        Enter 1 instead of name)      
+Please Select one of the demo chat Bots:
 1. E Paper
 2. PVT Election Bot
       `;
-      // thisRoom.counter = 0;
+      thisRoom.counter = 0;
+      thisRoom.isInit = true;
       thisRoom.nextMenu = false;
         break;
 
-      case 1:
+case 1:
+  dat = `
+  Welcome to Daily Nation E-Paper 
+Please enter your Name:
+( It is just a test version. 
+Enter 1 instead of name)
+  `;
+  break;
+
+      case 2:
 
         if(!thisRoom.nextMenu) {
         dat = `
@@ -95,7 +109,7 @@ Enter 1 instead of name)
 `;
 }
         break;
-      case 2:
+      case 3:
         if(!thisRoom.nextMenu) {
         dat = `
 #Category#
@@ -121,7 +135,7 @@ Press 0 to go to Main Menu.
   `
 }
         break;
-      case 3:
+      case 4:
         if(!thisRoom.nextMenu) {
         dat = `#Subscribe for Daily Newspaper#
 Please select the subscription duration:
@@ -150,7 +164,7 @@ Press 0 to go to Main Menu.
           `
         }
         break;
-      case 4:
+      case 5:
         if(!thisRoom.nextMenu) { 
         dat = `
 #subscription pay#
@@ -191,7 +205,7 @@ break;
       `;
      }
 
-     if ( (data.value == 2) && !thisRoom.isInit && !thisRoom.nextMenu) {
+     if ( (data.value == 2) && thisRoom.isInit && !thisRoom.nextMenu) {
       thisRoom.nextMenu = true
       dat = `
       Welcome to PVT 2021
@@ -207,14 +221,17 @@ Please choose one option below:
 
 Press 0 to go to Main Menu.
       `; 
-      thisRoom.counter = 0;
+      thisRoom.counter = 2;
     }
 
 
     console.log('counter ====', thisRoom.counter);
+    data = Object.assign(data, { response: dat });
 
-      data = Object.assign(data, { response: dat });
-      thisRoom.counter++;
+     
+    //  if (data.value == 1) {
+      
+    //  }
   
 
 
@@ -225,9 +242,9 @@ Press 0 to go to Main Menu.
 
 
   
-     thisRoom.isInit = false;
      io.sockets.in(thisRoom.roomname).emit('chat message', { data: data, id: socket.id });
-    
+         thisRoom.isInit = false;
+
 
   });
   socket.on("disconnect", () => {
