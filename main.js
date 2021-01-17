@@ -42,10 +42,6 @@ io.on("connection", function (socket) {
     switch (thisRoom.counter) {
       case -1:
         dat = `
-      Welcome to Daily Nation E-Paper 
-Please enter your Name:
-( It is just a test version. 
-Enter 1 instead of name)
 Please Select one of the demo chat Bots:
 1. E Paper
 2. PVT Election Bot
@@ -57,10 +53,6 @@ Please Select one of the demo chat Bots:
 
         case 0:
         dat = `
-        Welcome to Daily Nation E-Paper 
-        Please enter your Name:
-        ( It is just a test version. 
-        Enter 1 instead of name)      
 Please Select one of the demo chat Bots:
 1. E Paper
 2. PVT Election Bot
