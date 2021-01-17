@@ -71,12 +71,23 @@ Please Select one of the demo chat Bots:
         break;
 
 case 1:
+  if(!thisRoom.nextMenu) {
   dat = `
   Welcome to Daily Nation E-Paper 
 Please enter your Name:
 ( It is just a test version. 
 Enter 1 instead of name)
+  `; } else {
+    dat = `
+    Please enter polling station no:
+    { Its a test version,
+       Enter 1 instead of station no.
+    }
+    
+    
+    Press 0 to go to Main Menu.
   `;
+  }
   break;
 
       case 2:
@@ -99,14 +110,19 @@ Enter 1 instead of name)
 10. Northern Province
 `; } else {
   dat = `
-  Please enter polling station no:
-  { Its a test version,
-     Enter 1 instead of station no.
-  }
-  
-  
-  Press 0 to go to Main Menu.
-`;
+  Northmead Basic School polling
+Please choose one of the option below:
+{ Its a test version,
+   only 1 number is working.
+}
+1) Presidential
+2) MP
+3) Mayor
+4) councillor
+
+
+Press 0 to go to Main Menu.
+  `;
 }
         break;
       case 3:
@@ -120,19 +136,20 @@ Please tell us what are you looking for:
 3) Get Credential for Website login
 `; } else {
   dat = `
-  Northmead Basic School polling
-Please choose one of the option below:
+          Please select political party:
 { Its a test version,
    only 1 number is working.
 }
-1) Presidential
-2) MP
-3) Mayor
-4) councillor
+1) PF
+2) UPND
+3) DP
+4) MMD
+5) UNIP 
+6) CDC
 
 
 Press 0 to go to Main Menu.
-  `
+          `
 }
         break;
       case 4:
@@ -148,20 +165,14 @@ Please select the subscription duration:
 7) 1 year Subscription`
         } else {
           dat = `
-          Please select political party:
-{ Its a test version,
-   only 1 number is working.
-}
-1) PF
-2) UPND
-3) DP
-4) MMD
-5) UNIP 
-6) CDC
-
-
-Press 0 to go to Main Menu.
-          `
+          Please enter the Vote counts:
+        { Its a test version,
+           only 1 number is working.
+        }
+        
+        
+        Press 0 to go to Main Menu.
+          `; 
         }
         break;
       case 5:
@@ -177,14 +188,12 @@ https://flutterwave.com/us/
 Press 0 to go to Main Menu.
 `; } else {
   dat = `
-  Please enter the Vote counts:
-{ Its a test version,
-   only 1 number is working.
-}
+  #New Status#
+Updated Total Vote Count in presidential election for the PF political party is : 101
 
 
-Press 0 to go to Main Menu.
-  `;
+Press 0 to go to the Main Menu
+  `
 }
         break;
 default: 
@@ -221,7 +230,7 @@ Please choose one option below:
 
 Press 0 to go to Main Menu.
       `; 
-      thisRoom.counter = 2;
+      thisRoom.counter = 1;
     }
 
 
